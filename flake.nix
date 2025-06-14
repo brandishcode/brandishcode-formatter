@@ -14,8 +14,14 @@
       treefmt-nix,
       ...
     }:
-    flake-utils.lib.eachDefaultSystem (system: {
-      formatter =
-        (treefmt-nix.lib.evalModule nixpkgs.legacyPackages.${system} ./treefmt.nix).config.build.wrapper;
-    });
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+      {
+        formatter = (treefmt-nix.lib.evalModule pkgs ./treefmt.nix).config.build.wrapper;
+        packages.default = treefmt-nix.lib.mkWrapper pkgs (import ./treefmt.nix);
+      }
+    );
 }
