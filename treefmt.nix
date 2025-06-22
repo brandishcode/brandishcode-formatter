@@ -15,4 +15,5 @@
       call_parentheses = "Input";
     };
   };
+  programs.mdformat.enable = true;
 }
